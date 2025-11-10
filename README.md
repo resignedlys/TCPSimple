@@ -17,52 +17,6 @@
 
 ## 🚀 快速上手
 
-### 服务端示例
-```csharp
-using TCPSimple.Server;
-using TCPSimple.Common;
-using System.Net;
-
-// 1. 配置服务端
-var serverOptions = new TcpServerOptions
-{
-    IpAddress = IPAddress.Any,    // 监听所有网卡
-    Port = 8888,                  // 监听端口
-    MaxConnections = 50,          // 最大连接数
-    ReceiveTimeout = 30000        // 接收超时（毫秒）
-};
-
-// 2. 实例化服务端并注册消息处理逻辑
-var server = new TcpServer(serverOptions, async (server, clientId, message) =>
-    await HandleMessage(server, clientId, message)
-);
-
-// 3. 订阅事件（可选）
-server.ClientDisconnected += clientId => 
-    Console.WriteLine($"客户端 [{clientId}] 已断开连接");
-server.ErrorOccurred += ex => 
-    Console.WriteLine($"发生异常: {ex.Message}");
-
-// 4. 启动服务
-server.Start();
-Console.WriteLine("服务端已启动，按任意键停止...");
-Console.ReadKey();
-
-// 5. 停止服务（释放资源）
-server.Stop();
-
-
-// 消息处理方法
-async Task HandleMessage(TcpServer server, string clientId, string message)
-{
-    Console.WriteLine($"收到客户端 [{clientId}] 的消息: {message}");
-    // 回复客户端
-    await server.SendToClientAsync(clientId, $"服务端已收到: {message}");
-    // 广播消息给所有客户端（可选）
-    await server.BroadcastAsync($"通知：客户端 [{clientId}] 发送了消息");
-}
-
-
 ### 客户端示例
 ```csharp
 using TCPSimple.Client;
@@ -117,3 +71,49 @@ finally
 通过 NuGet 安装（推荐）：
 ```bash
 dotnet add package TCPSimple
+
+### 服务端示例
+```csharp
+using TCPSimple.Server;
+using TCPSimple.Common;
+using System.Net;
+
+// 1. 配置服务端
+var serverOptions = new TcpServerOptions
+{
+    IpAddress = IPAddress.Any,    // 监听所有网卡
+    Port = 8888,                  // 监听端口
+    MaxConnections = 50,          // 最大连接数
+    ReceiveTimeout = 30000        // 接收超时（毫秒）
+};
+
+// 2. 实例化服务端并注册消息处理逻辑
+var server = new TcpServer(serverOptions, async (server, clientId, message) =>
+    await HandleMessage(server, clientId, message)
+);
+
+// 3. 订阅事件（可选）
+server.ClientDisconnected += clientId => 
+    Console.WriteLine($"客户端 [{clientId}] 已断开连接");
+server.ErrorOccurred += ex => 
+    Console.WriteLine($"发生异常: {ex.Message}");
+
+// 4. 启动服务
+server.Start();
+Console.WriteLine("服务端已启动，按任意键停止...");
+Console.ReadKey();
+
+// 5. 停止服务（释放资源）
+server.Stop();
+
+
+// 消息处理方法
+async Task HandleMessage(TcpServer server, string clientId, string message)
+{
+    Console.WriteLine($"收到客户端 [{clientId}] 的消息: {message}");
+    // 回复客户端
+    await server.SendToClientAsync(clientId, $"服务端已收到: {message}");
+    // 广播消息给所有客户端（可选）
+    await server.BroadcastAsync($"通知：客户端 [{clientId}] 发送了消息");
+}
+
