@@ -61,3 +61,51 @@ async Task HandleMessage(TcpServer server, string clientId, string message)
     // 广播消息给所有客户端（可选）
     await server.BroadcastAsync($"通知：客户端 [{clientId}] 发送了消息");
 }
+
+
+### 客户端示例
+using TCPSimple.Client;
+using TCPSimple.Exceptions;
+using Newtonsoft.Json;
+
+// 1. 配置客户端
+var clientOptions = new TcpClientOptions
+{
+    ServerIp = "127.0.0.1",       // 服务端 IP
+    ServerPort = 8888,            // 服务端端口
+    ConnectTimeout = 5000,       // 连接超时（毫秒）
+    ReceiveTimeout = 30000       // 接收超时（毫秒）
+};
+
+// 2. 实例化客户端并注册消息接收回调
+var client = new TcpClient(clientOptions, message =>
+    Console.WriteLine($"收到服务端消息: {message}")
+);
+
+// 3. 订阅事件（可选）
+client.Disconnected += () => 
+    Console.WriteLine("与服务端的连接已断开");
+client.ErrorOccurred += ex => 
+    Console.WriteLine($"发生异常: {JsonConvert.SerializeObject(ex)}");
+
+// 4. 连接并交互
+try
+{
+    await client.ConnectAsync();
+    Console.WriteLine("连接成功，输入消息发送（空行退出）:");
+    
+    string? input;
+    while ((input = Console.ReadLine()) != null)
+    {
+        if (string.IsNullOrEmpty(input)) break;
+        await client.SendAsync(input);
+    }
+}
+catch (TcpConnectionException ex)
+{
+    Console.WriteLine($"连接失败: {ex.Message}");
+}
+finally
+{
+    client.Disconnect(); // 主动断开连接
+}
