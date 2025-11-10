@@ -64,6 +64,7 @@ async Task HandleMessage(TcpServer server, string clientId, string message)
 
 
 ### 客户端示例
+```csharp
 using TCPSimple.Client;
 using TCPSimple.Exceptions;
 using Newtonsoft.Json;
