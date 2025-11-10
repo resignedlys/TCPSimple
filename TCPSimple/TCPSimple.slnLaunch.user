@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "新建配置文件",
+    "Projects": [
+      {
+        "Path": "..\\SampleServer\\SampleServer.csproj",
+        "Action": "Start",
+        "DebugTarget": "SampleServer"
+      },
+      {
+        "Path": "..\\SampleClient\\SampleClient.csproj",
+        "Action": "Start",
+        "DebugTarget": "SampleClient"
+      }
+    ]
+  }
+]
