@@ -110,3 +110,10 @@ finally
 {
     client.Disconnect(); // 主动断开连接
 }
+
+
+## 📦 安装
+
+通过 NuGet 安装（推荐）：
+```bash
+dotnet add package TCPSimple
