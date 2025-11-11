@@ -171,6 +171,3 @@ A：完全支持，可在 Windows、Linux、macOS 上运行（需安装对应平
 
 ## 📄 许可证
 
-MIT © [your-username]
-
-将文档中的 `your-username` 替换为你的 GitHub 用户名后，即可直接用于仓库的 `README.md`，整体结构和格式完全统一。
