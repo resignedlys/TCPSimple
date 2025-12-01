@@ -79,7 +79,7 @@ var clientOptions = new TcpClientOptions
 };
 
 // 2. 实例化客户端并注册消息接收回调
-var client = new TcpClient(clientOptions, message =>
+var client = new TcpClient(clientOptions, (string message) =>
     Console.WriteLine($"收到服务端消息: {message}")
 );
 
